@@ -151,7 +151,6 @@
                     <div class="info">
                         <a href="#" class="d-block">Alexander Pierce</a>
                     </div>
->>>>>>> 2cc30dd3cce2e69b6a1e271975b2de5abf589bca
                 </div>
 
                 <div class="form-inline">
