@@ -22,6 +22,8 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('../dist/css/adminlte.min.css') }}">
 
+    @livewireStyles
+
 </head>
 <body class="font-sans antialiased">
 <div class="min-h-screen bg-gray-100">
@@ -48,6 +50,8 @@
 <script src="{{ asset('../plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- AdminLTE -->
 <script src="{{ asset('../dist/js/adminlte.js') }}"></script>
+
+@livewireScripts
 
 </body>
 </html>
