@@ -18,5 +18,6 @@ class Project extends Model
         'password',
     ];
 
+
     use HasFactory;
 }
