@@ -2,12 +2,17 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Project;
 use Livewire\Component;
 
 class LeftMenu extends Component
 {
-    public function render()
+    public $projects;
+
+    public function render ()
     {
-        return view('livewire.left-menu');
+
+        Project::all ();
+        return view ('livewire.left-menu');
     }
 }
