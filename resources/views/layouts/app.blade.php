@@ -22,10 +22,12 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('../dist/css/adminlte.min.css') }}">
 
+
+
     @livewireStyles
 
 </head>
-<body class="font-sans antialiased">
+<body>
 <div class="min-h-screen bg-gray-100">
 {{--@include('layouts.navigation')--}}
 
@@ -43,15 +45,15 @@
     </main>
 </div>
 
-
 <!-- jQuery -->
 <script src="{{ asset('../plugins/jquery/jquery.min.js') }}"></script>
-<!-- Bootstrap -->
-<script src="{{ asset('../plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
 <!-- AdminLTE -->
 <script src="{{ asset('../dist/js/adminlte.js') }}"></script>
 
-@livewireScripts
+<!-- Bootstrap -->
+<script src="{{ asset('../plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
+@livewireScripts
 </body>
 </html>
