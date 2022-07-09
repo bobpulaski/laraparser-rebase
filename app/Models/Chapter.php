@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class Chapter extends Model
 {
+
     /**
      * The attributes that are mass assignable.
      *
@@ -15,7 +16,6 @@ class Project extends Model
     protected $fillable = [
         'title',
     ];
-
 
     use HasFactory;
 }

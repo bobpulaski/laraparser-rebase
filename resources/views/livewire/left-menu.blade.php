@@ -1,28 +1,40 @@
 <div>
+
     @include('livewire.project.create-modal')
 
 
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-    @foreach($projects as $project)
-        <li class="nav-item {{--menu-open--}} @if ($project->title === $activeProjectItem) menu-open @endif">
-            <a href="#" class="nav-link {{--active--}}">
-                {{--<i class="nav-icon fas fa-tachometer-alt"></i>--}}
-                <p>
-                    <i class="right fas fa-angle-left"></i>
-                    {{ $project->title }}
-                </p>
-            </a>
+        <li class="nav-header">ПРОЕКТЫ</li>
 
-            <ul class="nav nav-treeview">
-                <li class="nav-item ml-2">
-                    <a href="../UI/general.html" class="nav-link active">
-                        {{--<i class="far fa-circle nav-icon"></i>--}}
-                        <p>General</p>
-                    </a>
-                </li>
-            </ul>
 
+        @foreach($projects as $project)
+            <li class="nav-item @if ($project->id === $activeProjectId) menu-is-opening menu-open @endif">
+                <a href="#" class="nav-link">
+                    <p>
+                        {{ $project->title }}
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview border-bottom pb-3"
+                    style="@if ($project->id === $activeProjectId) display: block; @else display: none; @endif">
+                    @livewire('chapter-node', ['project_id' => $project->id])
+
+                </ul>
+
+            </li>
+        @endforeach
+
+        <li class="nav-item">
+            <button type="button" class="btn btn-block btn-outline-info btn-xs my-4 w-75 ml-2"
+                    data-toggle="modal"
+                    data-target="#createProjectModal" data-backdrop="false">
+                Добавить новый проект
+            </button>
         </li>
-    @endforeach
+
+
+    </ul>
+
 
 </div>
