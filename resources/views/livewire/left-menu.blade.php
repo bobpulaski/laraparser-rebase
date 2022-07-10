@@ -10,47 +10,46 @@
 
 
         @foreach($projects as $project)
-            <li class="nav-item @if ($project->id === $activeProjectId) menu-is-opening menu-open @endif">
-                <a href="#" class="nav-link">
-                    <p>
-                        {{ $project->title }}
-                        {{ $project->id }}
-                        <i class="fas fa-angle-left right"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview border-bottom pb-3"
-                    style="@if ($project->id === $activeProjectId) display: block; @else display: none; @endif">
+                <li class="nav-item @if ($project->id === $activeProjectId) menu-is-opening menu-open @endif">
+                    <a href="#" class="nav-link">
+                        <p>
+                            {{ $project->title }}
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview border-bottom pb-3"
+                        style="@if ($project->id === $activeProjectId) display: block; @else display: none; @endif">
 
-                    @foreach($chapters as $chapter)
-                        @if($chapter->project_id == $project->id)
-                            <li class="nav-item">
-                                <a href="" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>{{ $chapter->title }}</p>
-                                </a>
-                            </li>
-                        @endif
-                    @endforeach
+                        @foreach($chapters as $chapter)
+                            @if($chapter->project_id == $project->id)
+                                <li class="nav-item">
+                                    <a href="" class="nav-link @if ($chapter->id === $activeChapterId) active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{ $chapter->title }}</p>
+                                    </a>
+                                </li>
+                            @endif
+                        @endforeach
 
-                    <button type="button" wire:click.prevent="projectEdit({{ $project->id }})" class="btn btn-info">
-                        Изменить
-                    </button>
-                    <button type="button" wire:click.prevent="ChapterAdd({{ $project->id }})" class="btn btn-info">
-                        Добавить парсер
-                    </button>
+                        <button type="button" wire:click.prevent="projectEdit({{ $project->id }})" class="btn btn-info">
+                            Изменить
+                        </button>
+                        <button type="button" wire:click.prevent="ChapterAdd({{ $project->id }})" class="btn btn-info">
+                            Добавить парсер
+                        </button>
 
-                </ul>
+                    </ul>
 
 
+                </li>
+            @endforeach
+
+            <li class="nav-item">
+                <button type="button" wire:click.prevent="createProject"
+                        class="btn btn-block btn-outline-info btn-xs my-4 w-75 ml-2">
+                    Добавить новый проект
+                </button>
             </li>
-        @endforeach
-
-        <li class="nav-item">
-            <button type="button" wire:click.prevent="createProject"
-                    class="btn btn-block btn-outline-info btn-xs my-4 w-75 ml-2">
-                Добавить новый проект
-            </button>
-        </li>
 
 
     </ul>

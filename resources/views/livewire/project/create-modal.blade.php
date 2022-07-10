@@ -10,7 +10,6 @@
             </div>
 
             <form>
-                @csrf
                 <div class="modal-body">
                     <label for="createNewProjectInput">Имя</label>
                     <input type="text" class="form-control" id="createNewProjectInput" placeholder="Название проекта"

@@ -14,9 +14,9 @@ class LeftMenu extends Component
     public $title;
     public $project_id;
     public $activeProjectId;
-    public $activeChapterId;
 
     public $chapters;
+    public $activeChapterId;
 
     public function render ()
     {
@@ -84,5 +84,6 @@ class LeftMenu extends Component
         $chapters->save ();
 
         $this->activeChapterId = $chapters->id;
+        //dd($this->activeChapterId);
     }
 }
