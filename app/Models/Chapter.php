@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Chapter extends Model
 {
 
+    protected $table = 'chapters';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -17,5 +19,12 @@ class Chapter extends Model
         'title',
     ];
 
+
     use HasFactory;
+
+    public function projects()
+    {
+        return $this->belongsTo (Project::class);
+    }
+
 }

@@ -52,6 +52,15 @@
 <!-- Bootstrap -->
 <script src="{{ asset('../plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
+<script>
+    window.addEventListener('show-project-modal-form-event', event => {
+        $('#createProjectModal').modal('show');
+    });
+
+    window.addEventListener('show-chapter-modal-form-event', event => {
+        $('#createChapterModal').modal('show');
+    })
+</script>
 
 @livewireScripts
 </body>

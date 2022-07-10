@@ -1,6 +1,7 @@
 <div>
 
     @include('livewire.project.create-modal')
+    @include('livewire.chapter.create-chapter-modal')
 
 
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -13,22 +14,40 @@
                 <a href="#" class="nav-link">
                     <p>
                         {{ $project->title }}
+                        {{ $project->id }}
                         <i class="fas fa-angle-left right"></i>
                     </p>
                 </a>
                 <ul class="nav nav-treeview border-bottom pb-3"
                     style="@if ($project->id === $activeProjectId) display: block; @else display: none; @endif">
-                    @livewire('chapter-node', ['project_id' => $project->id])
+
+                    @foreach($chapters as $chapter)
+                        @if($chapter->project_id == $project->id)
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>{{ $chapter->title }}</p>
+                                </a>
+                            </li>
+                        @endif
+                    @endforeach
+
+                    <button type="button" wire:click.prevent="projectEdit({{ $project->id }})" class="btn btn-info">
+                        Изменить
+                    </button>
+                    <button type="button" wire:click.prevent="ChapterAdd({{ $project->id }})" class="btn btn-info">
+                        Добавить парсер
+                    </button>
 
                 </ul>
+
 
             </li>
         @endforeach
 
         <li class="nav-item">
-            <button type="button" class="btn btn-block btn-outline-info btn-xs my-4 w-75 ml-2"
-                    data-toggle="modal"
-                    data-target="#createProjectModal" data-backdrop="false">
+            <button type="button" wire:click.prevent="createProject"
+                    class="btn btn-block btn-outline-info btn-xs my-4 w-75 ml-2">
                 Добавить новый проект
             </button>
         </li>

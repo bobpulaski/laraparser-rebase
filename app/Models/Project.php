@@ -18,4 +18,14 @@ class Project extends Model
 
 
     use HasFactory;
+
+    public function chapters()
+    {
+        return $this->hasMany (Chapter::class, 'project_id');
+    }
+
+    public function users()
+    {
+        return $this->belongsTo (User::class);
+    }
 }
