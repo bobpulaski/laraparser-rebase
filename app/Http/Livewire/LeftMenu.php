@@ -18,6 +18,10 @@ class LeftMenu extends Component
     public $chapters;
     public $activeChapterId;
 
+    protected $rules = [
+        'title' => 'required|min:3|max:20',
+    ];
+
     public function render ()
     {
 
@@ -36,6 +40,7 @@ class LeftMenu extends Component
         return view ('livewire.left-menu');
     }
 
+
     public function createProject ()
     {
         $this->dispatchBrowserEvent ('show-project-modal-form-event');
@@ -43,12 +48,16 @@ class LeftMenu extends Component
 
     public function storeProject ()
     {
+        $this->validate();
+
         $projects = new Project();
         $projects->user_id = Auth::id ();
         $projects->title = $this->title;
         $projects->save ();
 
         $this->activeProjectId = $projects->id;
+
+        $this->dispatchBrowserEvent ('hide-project-modal-form-event');
     }
 
     public function projectEdit (Project $project)
@@ -70,7 +79,6 @@ class LeftMenu extends Component
     public function ChapterAdd (Project $project)
     {
         $this->project_id = $project->id;
-        //$this->project_id = $project->id;
 
         $this->dispatchBrowserEvent ('show-chapter-modal-form-event');
     }
@@ -84,6 +92,6 @@ class LeftMenu extends Component
         $chapters->save ();
 
         $this->activeChapterId = $chapters->id;
-        //dd($this->activeChapterId);
+        $this->activeProjectId = $this->project_id;
     }
 }
