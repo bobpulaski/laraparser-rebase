@@ -11,7 +11,8 @@ use Livewire\Component;
 class LeftMenu extends Component
 {
     public $projects;
-    public $title;
+    public $projectTitle;
+    public $chapterTitle;
     public $project_id;
     public $activeProjectId;
 
@@ -19,8 +20,48 @@ class LeftMenu extends Component
     public $activeChapterId;
 
     protected $rules = [
-        'title' => 'required|min:3|max:20',
+        'projectTitle' => 'required|min:3|max:20',
+        'chapterTitle' => 'required|min:3|max:20',
     ];
+
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
+        public function storeProject ()
+    {
+        $this->validate([
+            'projectTitle' => 'required|min:3|max:20',
+        ]);
+
+        $projects = new Project();
+        $projects->user_id = Auth::id ();
+        $projects->title = $this->projectTitle;
+        $projects->save ();
+
+        $this->activeProjectId = $projects->id;
+
+        $this->dispatchBrowserEvent ('hide-project-modal-form-event');
+    }
+
+    public function storeChapter ($id)
+    {
+        //dd($id);
+        $this->dispatchBrowserEvent ('show-chapter-modal-form-event');
+
+        /*$this->validate([
+            'chapterTitle' => 'required|min:3|max:20',
+        ]);*/
+
+        $chapters = new Chapter();
+        $chapters->project_id = $id;
+        $chapters->title = $this->chapterTitle;
+        $chapters->save ();
+
+        $this->activeChapterId = $chapters->id;
+        $this->activeProjectId = $id;
+    }
 
     public function render ()
     {
@@ -35,30 +76,10 @@ class LeftMenu extends Component
             ->select('chapters.*')
             ->get ();
 
-        //dd($this->chapters);
-
         return view ('livewire.left-menu');
     }
 
 
-    public function createProject ()
-    {
-        $this->dispatchBrowserEvent ('show-project-modal-form-event');
-    }
-
-    public function storeProject ()
-    {
-        $this->validate();
-
-        $projects = new Project();
-        $projects->user_id = Auth::id ();
-        $projects->title = $this->title;
-        $projects->save ();
-
-        $this->activeProjectId = $projects->id;
-
-        $this->dispatchBrowserEvent ('hide-project-modal-form-event');
-    }
 
     public function projectEdit (Project $project)
     {
@@ -76,22 +97,13 @@ class LeftMenu extends Component
         }*/
     }
 
-    public function ChapterAdd (Project $project)
+/*    public function ChapterAdd (Project $project)
     {
         $this->project_id = $project->id;
 
         $this->dispatchBrowserEvent ('show-chapter-modal-form-event');
-    }
+    }*/
 
 
-    public function storeChapter (Project $project)
-    {
-        $chapters = new Chapter();
-        $chapters->project_id = $this->project_id;
-        $chapters->title = $this->title;
-        $chapters->save ();
 
-        $this->activeChapterId = $chapters->id;
-        $this->activeProjectId = $this->project_id;
-    }
 }
