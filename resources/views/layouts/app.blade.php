@@ -13,7 +13,8 @@
     <!-- Scripts -->
 {{--@vite(['resources/css/app.css', 'resources/js/app.js'])--}}
 <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('../plugins/fontawesome-free/css/all.min.css') }}">
     <!-- IonIcons -->
@@ -52,18 +53,19 @@
 <!-- Bootstrap -->
 <script src="{{ asset('../plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
-<script>
-    window.addEventListener('show-project-modal-form-event', event => {
-        $('#createProjectModal').modal('show');
-    })
-
+<script type="text/javascript">
     window.addEventListener('hide-project-modal-form-event', event => {
-        $('#createProjectModal').modal('hide');
+        $('#projectModal').modal('hide');
     })
 
     window.addEventListener('show-chapter-modal-form-event', event => {
-        $('#createChapterModal').modal('show');
+        $('#chapterModal').modal('show');
     })
+
+    window.addEventListener('hide-chapter-modal-form-event', event => {
+        $('#chapterModal').modal('hide');
+    })
+
 </script>
 
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

@@ -12,32 +12,74 @@ class LeftMenu extends Component
 {
     public $projects;
     public $chapters;
+
+    public $projectTitle;
     public $chapterTitle;
-    public $activeProjectId;
 
+    public $projectId;
 
-    public $activeChapterId;
-
-    protected $listeners = ['projectAdded' => 'render'];
-
-    public function render()
+    public function render ()
     {
 
-        $this->projects = Project::where('user_id', Auth::id())
-            ->toBase()
-            ->get();
+        $this->projects = Project::where ('user_id', Auth::id ())
+            ->toBase ()
+            ->get ();
 
-        $this->chapters = DB::table('chapters')
-            ->leftJoin('projects', 'chapters.project_id', '=', 'projects.id')
-            ->where('user_id', Auth::id())
-            ->select('chapters.*')
-            ->get();
+        $this->chapters = DB::table ('chapters')
+            ->leftJoin ('projects', 'chapters.project_id', '=', 'projects.id')
+            ->where ('user_id', Auth::id ())
+            ->select ('chapters.*')
+            ->get ();
 
-        return view('livewire.left-menu');
+        return view ('livewire.left-menu');
+    }
+
+    public function storeProject ()
+    {
+        Project::create([
+            'user_id' => Auth::id (),
+            'title' => $this->projectTitle,
+        ]);
+
+        $this->dispatchBrowserEvent ('hide-project-modal-form-event');
     }
 
 
-    public function projectEdit(Project $project)
+    public function chapterShowModal ($projectId)
+    {
+
+        $this->projectId = $projectId;
+        $this->dispatchBrowserEvent ('show-chapter-modal-form-event');
+    }
+
+    public function storeChapter ()
+    {
+
+        //dd($this->projectId);
+
+        Chapter::create([
+            'project_id' => $this->projectId,
+            'title' => $this->chapterTitle,
+        ]);
+
+        $this->dispatchBrowserEvent ('hide-chapter-modal-form-event');
+    }
+
+
+
+
+    /*public function storeChapter ()
+    {
+        Project::create([
+            'user_id' => Auth::id (),
+            'title' => $this->projectTitle,
+        ]);
+
+        $this->dispatchBrowserEvent ('hide-project-modal-form-event');
+    }*/
+
+
+    public function projectEdit (Project $project)
     {
 
         //dd ($project);
