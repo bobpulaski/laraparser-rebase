@@ -11,77 +11,33 @@ use Livewire\Component;
 class LeftMenu extends Component
 {
     public $projects;
-    public $projectTitle;
+    public $chapters;
     public $chapterTitle;
-    public $project_id;
     public $activeProjectId;
 
-    public $chapters;
+
     public $activeChapterId;
 
-    protected $rules = [
-        'projectTitle' => 'required|min:3|max:20',
-        'chapterTitle' => 'required|min:3|max:20',
-    ];
+    protected $listeners = ['projectAdded' => 'render'];
 
-    public function updated($propertyName)
-    {
-        $this->validateOnly($propertyName);
-    }
-
-        public function storeProject ()
-    {
-        $this->validate([
-            'projectTitle' => 'required|min:3|max:20',
-        ]);
-
-        $projects = new Project();
-        $projects->user_id = Auth::id ();
-        $projects->title = $this->projectTitle;
-        $projects->save ();
-
-        $this->activeProjectId = $projects->id;
-
-        $this->dispatchBrowserEvent ('hide-project-modal-form-event');
-    }
-
-    public function storeChapter ($id)
-    {
-        //dd($id);
-        $this->dispatchBrowserEvent ('show-chapter-modal-form-event');
-
-        /*$this->validate([
-            'chapterTitle' => 'required|min:3|max:20',
-        ]);*/
-
-        $chapters = new Chapter();
-        $chapters->project_id = $id;
-        $chapters->title = $this->chapterTitle;
-        $chapters->save ();
-
-        $this->activeChapterId = $chapters->id;
-        $this->activeProjectId = $id;
-    }
-
-    public function render ()
+    public function render()
     {
 
-        $this->projects = Project::where ('user_id', Auth::id ())
-            ->toBase ()
-            ->get ();
+        $this->projects = Project::where('user_id', Auth::id())
+            ->toBase()
+            ->get();
 
-        $this->chapters = DB::table ('chapters')
-            ->leftJoin ('projects', 'chapters.project_id', '=', 'projects.id')
-            ->where ('user_id', Auth::id ())
+        $this->chapters = DB::table('chapters')
+            ->leftJoin('projects', 'chapters.project_id', '=', 'projects.id')
+            ->where('user_id', Auth::id())
             ->select('chapters.*')
-            ->get ();
+            ->get();
 
-        return view ('livewire.left-menu');
+        return view('livewire.left-menu');
     }
 
 
-
-    public function projectEdit (Project $project)
+    public function projectEdit(Project $project)
     {
 
         //dd ($project);
@@ -97,13 +53,12 @@ class LeftMenu extends Component
         }*/
     }
 
-/*    public function ChapterAdd (Project $project)
-    {
-        $this->project_id = $project->id;
+    /*    public function ChapterAdd (Project $project)
+        {
+            $this->project_id = $project->id;
 
-        $this->dispatchBrowserEvent ('show-chapter-modal-form-event');
-    }*/
-
+            $this->dispatchBrowserEvent ('show-chapter-modal-form-event');
+        }*/
 
 
 }
