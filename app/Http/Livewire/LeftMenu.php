@@ -10,17 +10,15 @@ use Livewire\Component;
 
 class LeftMenu extends Component
 {
-    public $projects;
-    public $chapters;
+    public $projects; // Для получение данных из модели Project
+    public $chapters; // Для получение данных из модели Chapter
+    public $title; // Поле в обеих моделях, к которому идет привязка компонента
 
-    public $title;
+    public $activeProjectId; // Получаем текущий ID записи модели Project для определения активного пункта меню
+    public $activeChapterId; // Получаем текущий ID записи модели Chapter для определения активного пункта меню
 
-    public $whatKindOfModal = '';
-
-    public $activeProjectId;
-    public $activeChapterId;
-
-    public $submitButtonState = 'disabled';
+    public $whatKindOfModal = ''; // Определяем с каким окном какой модели работаем
+    public $submitButtonState = 'disabled'; // Определяем состояние кнопки "Создать" активна или нет при валидации формы
 
     protected $rules = [
         'title' => 'required|min:3|max:20',
