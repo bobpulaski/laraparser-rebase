@@ -13,94 +13,84 @@ class LeftMenu extends Component
     public $projects;
     public $chapters;
 
-    public $projectTitle;
-    public $chapterTitle;
+    public $title;
 
-    public $projectId;
+    public $whatKindOfModal = '';
 
-    public function render ()
+    public $activeProjectId;
+    public $activeChapterId;
+
+    public $submitButtonState = 'disabled';
+
+    protected $rules = [
+        'title' => 'required|min:3|max:20',
+    ];
+
+    public function updated($propertyName)
     {
 
-        $this->projects = Project::where ('user_id', Auth::id ())
-            ->toBase ()
-            ->get ();
-
-        $this->chapters = DB::table ('chapters')
-            ->leftJoin ('projects', 'chapters.project_id', '=', 'projects.id')
-            ->where ('user_id', Auth::id ())
-            ->select ('chapters.*')
-            ->get ();
-
-        return view ('livewire.left-menu');
+        $this->validateOnly($propertyName);
+        $this->submitButtonState = 'enabled';
     }
 
-    public function storeProject ()
+    public function resetAll()
     {
-        Project::create([
-            'user_id' => Auth::id (),
-            'title' => $this->projectTitle,
+        $this->submitButtonState = 'disabled';
+        $this->reset('title');
+        $this->resetValidation('title');
+    }
+
+    public function projectAddShowModal()
+    {
+        $this->resetAll();
+        $this->whatKindOfModal = 'project';
+        $this->dispatchBrowserEvent('show-project-modal-form-event');
+    }
+
+    public function chapterAddShowModal($projectId)
+    {
+        $this->resetAll();
+        $this->activeProjectId = $projectId;
+        $this->whatKindOfModal = 'chapter';
+        $this->dispatchBrowserEvent('show-chapter-modal-form-event');
+    }
+
+
+    public function storeProject()
+    {
+        $this->validate();
+        $projects = Project::create([
+            'user_id' => Auth::id(),
+            'title' => $this->title,
         ]);
-
-        $this->dispatchBrowserEvent ('hide-project-modal-form-event');
+        $this->activeProjectId = $projects->id;
+        $this->dispatchBrowserEvent('hide-project-modal-form-event');
     }
 
-
-    public function chapterShowModal ($projectId)
+    public function storeChapter()
     {
-
-        $this->projectId = $projectId;
-        $this->dispatchBrowserEvent ('show-chapter-modal-form-event');
-    }
-
-    public function storeChapter ()
-    {
-
-        //dd($this->projectId);
-
-        Chapter::create([
-            'project_id' => $this->projectId,
-            'title' => $this->chapterTitle,
+        $chapters = Chapter::create([
+            'project_id' => $this->activeProjectId,
+            'title' => $this->title,
         ]);
-
-        $this->dispatchBrowserEvent ('hide-chapter-modal-form-event');
+        $this->activeChapterId = $chapters->id;
+        $this->dispatchBrowserEvent('hide-chapter-modal-form-event');
     }
 
-
-
-
-    /*public function storeChapter ()
+    public function render()
     {
-        Project::create([
-            'user_id' => Auth::id (),
-            'title' => $this->projectTitle,
-        ]);
+        $this->projects = Project::where('user_id', Auth::id())
+            ->toBase()
+            ->get();
 
-        $this->dispatchBrowserEvent ('hide-project-modal-form-event');
-    }*/
+        $this->chapters = DB::table('chapters')
+            ->leftJoin('projects', 'chapters.project_id', '=', 'projects.id')
+            ->where('user_id', Auth::id())
+            ->select('chapters.*')
+            ->get();
 
-
-    public function projectEdit (Project $project)
-    {
-
-        //dd ($project);
-
-        //dd ($this->project_id);
-
-
-        /*$project = Project::find ($project_id);
-        if ($project) {
-            $this->title = $project->title;
-        } else {
-            return redirect ()->to ('/dashboard');
-        }*/
+        return view('livewire.left-menu');
     }
-
-    /*    public function ChapterAdd (Project $project)
-        {
-            $this->project_id = $project->id;
-
-            $this->dispatchBrowserEvent ('show-chapter-modal-form-event');
-        }*/
 
 
 }

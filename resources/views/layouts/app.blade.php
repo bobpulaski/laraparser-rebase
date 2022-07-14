@@ -54,6 +54,10 @@
 <script src="{{ asset('../plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
 <script type="text/javascript">
+    window.addEventListener('show-project-modal-form-event', event => {
+        $('#projectModal').modal('show');
+    })
+
     window.addEventListener('hide-project-modal-form-event', event => {
         $('#projectModal').modal('hide');
     })
