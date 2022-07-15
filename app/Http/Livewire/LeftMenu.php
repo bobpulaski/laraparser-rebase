@@ -26,7 +26,7 @@ class LeftMenu extends Component
 
     public function updated($propertyName)
     {
-
+        $this->submitButtonState = 'disabled';
         $this->validateOnly($propertyName);
         $this->submitButtonState = 'enabled';
     }
@@ -63,6 +63,7 @@ class LeftMenu extends Component
         ]);
         $this->activeProjectId = $projects->id;
         $this->dispatchBrowserEvent('hide-project-modal-form-event');
+        $this->dispatchBrowserEvent('toastr-project-stored-event');
     }
 
     public function storeChapter()
@@ -73,6 +74,7 @@ class LeftMenu extends Component
         ]);
         $this->activeChapterId = $chapters->id;
         $this->dispatchBrowserEvent('hide-chapter-modal-form-event');
+        $this->dispatchBrowserEvent('toastr-chapter-stored-event');
     }
 
     public function render()

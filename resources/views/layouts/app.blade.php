@@ -22,6 +22,11 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('../dist/css/adminlte.min.css') }}">
 
+    <!-- Toastr style -->
+    <link rel="stylesheet" href="{{ asset('../plugins/toastr/toastr.min.css') }}">
+    <!-- jQuery -->
+    <script src="{{ asset('../plugins/jquery/jquery.min.js') }}"></script>
+
 
     @livewireStyles
 
@@ -44,8 +49,7 @@
     </main>
 </div>
 
-<!-- jQuery -->
-<script src="{{ asset('../plugins/jquery/jquery.min.js') }}"></script>
+
 
 <!-- AdminLTE -->
 <script src="{{ asset('../dist/js/adminlte.js') }}"></script>
@@ -53,24 +57,12 @@
 <!-- Bootstrap -->
 <script src="{{ asset('../plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
-<script type="text/javascript">
-    window.addEventListener('show-project-modal-form-event', event => {
-        $('#projectModal').modal('show');
-    })
+<!-- Toastr -->
+<script src="{{ asset('../plugins/toastr/toastr.min.js') }}"></script>
 
-    window.addEventListener('hide-project-modal-form-event', event => {
-        $('#projectModal').modal('hide');
-    })
 
-    window.addEventListener('show-chapter-modal-form-event', event => {
-        $('#chapterModal').modal('show');
-    })
 
-    window.addEventListener('hide-chapter-modal-form-event', event => {
-        $('#chapterModal').modal('hide');
-    })
 
-</script>
 
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>

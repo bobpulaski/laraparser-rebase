@@ -7,14 +7,14 @@
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
         <div class="d-flex justify-content-between">
-            <div class="nav-header">PROJECTS</div>
+            <div class="nav-header">{{ __('МОИ ПРОЕКТЫ') }}</div>
             <div class="mr-2">
                 <!-- Button trigger modal -->
-                <button wire:click.prevent="projectAddShowModal" type="button" title="Добавить новый проект"
-                        class="btn btn-block btn-outline-light btn-xs"
-                    {{--data-toggle="modal" data-target="#projectModal"--}}>
+                <button wire:click.prevent="projectAddShowModal" type="button" title="{{ __('Создать новый проект') }}"
+                        class="btn btn-block btn-outline-light btn-xs">
                     +
                 </button>
+
             </div>
         </div>
 
@@ -39,13 +39,32 @@
                                     <p>{{ $chapter->title }}</p>
                                 </a>
                             </li>
-                    @endif
-                @endforeach
+                        @endif
+                    @endforeach
                 <!-- Button trigger Chapter modal -->
-                    <button wire:click="chapterAddShowModal({{ $project->id }})" type="button"
-                            class="btn btn-block btn-outline-light btn-xs">
-                        Add a new chapter
-                    </button>
+                    {{--<button wire:click="chapterAddShowModal({{ $project->id }})" type="button"
+                            class="btn btn-outline-light btn-xs">
+                        {{ __('Добавить парсер') }}
+                    </button>--}}
+                    <div class="btn-group btn-block">
+                        <button type="button" class="btn btn-xs btn-outline-secondary">{{ __('Проект') }}</button>
+                        <button type="button" class="btn btn-xs btn-outline-secondary dropdown-toggle description-icon"
+                                data-toggle="dropdown" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu" role="menu" style="">
+                            <a class="dropdown-item small" style="color: #2d3748 !important; cursor: pointer;"
+                               wire:click="chapterAddShowModal({{ $project->id }})">{{ __('Добавить парсер') }}</a>
+                            <a class="dropdown-item small"
+                               style="color: #2d3748 !important; cursor: pointer;">{{ __('Изменить проект') }}</a>
+                            <div class="dropdown-divider"></div>
+
+                            <a class="dropdown-item small"
+                               style="color: #8B2252 !important; cursor: pointer;">
+                                {{ __('Удалить проект') }}
+                            </a>
+                        </div>
+                    </div>
                 </ul>
             </li>
         @endforeach
@@ -75,7 +94,6 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1>{{$submitButtonState}}</h1>
 
                     @switch ($whatKindOfModal)
                         @case ('project')
@@ -98,10 +116,23 @@
 
                 <div class="modal-body">
 
-                    <p class="text-secondary">
-                        <small>В проектах удобно группировать парсеры по логике их применения к разбору веб-страниц.
-                            Например, к одному сайту или одному разделу сайта.</small>
-                    </p>
+
+                    @switch ($whatKindOfModal)
+                        @case ('project')
+                        <p class="text-secondary">
+                            <small>В проектах удобно группировать парсеры по логике их применения к разбору веб-страниц.
+                                Например, к одному сайту или одному разделу сайта.</small>
+                        </p>
+                        @break
+                        @case ('chapter')
+                        <p class="text-secondary">
+                            <small>В парсере...</small>
+                        </p>
+                        @break
+                        @default
+
+                    @endswitch
+
 
                     <div class="form-group">
 
@@ -124,16 +155,35 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Отмена') }}</button>
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">{{ __('Отмена') }}</button>
 
                     @switch ($whatKindOfModal)
                         @case ('project')
-                        <button wire:click="storeProject" type="button" @if ($submitButtonState === 'disabled') disabled @else enabled @endif';
-                                class="btn btn-primary">{{ __('Создать') }}</button>
+                        @switch($submitButtonState)
+                            @case('disabled')
+                            <button wire:click="storeProject" type="button"
+                                    class="btn btn-secondary disabled">{{ __('Создать') }}</button>
+                            @break
+                            @case('enabled')
+                            <button wire:click="storeProject" type="button"
+                                    class="btn btn-info">{{ __('Создать') }}</button>
+                            @break
+                            @default
+                        @endswitch
                         @break
+
                         @case ('chapter')
-                        <button wire:click="storeChapter" type="button"
-                                class="btn btn-primary">{{ __('Создать') }}</button>
+                        @switch($submitButtonState)
+                            @case('disabled')
+                            <button wire:click="storeChapter" type="button"
+                                    class="btn btn-secondary disabled">{{ __('Создать') }}</button>
+                            @break
+                            @case('enabled')
+                            <button wire:click="storeChapter" type="button"
+                                    class="btn btn-info">{{ __('Создать') }}</button>
+                            @break
+                            @default
+                        @endswitch
                         @break
                         @default
                     @endswitch
@@ -142,5 +192,38 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        window.addEventListener('show-project-modal-form-event', event => {
+            $('#projectModal').modal('show');
+        })
+
+        window.addEventListener('hide-project-modal-form-event', event => {
+            $('#projectModal').modal('hide');
+        })
+
+        window.addEventListener('toastr-project-stored-event', event => {
+            $(document).ready(function () {
+                toastr.options.timeOut = 3500;
+                toastr.info('Проект успешно создан!');
+            });
+        })
+
+        window.addEventListener('show-chapter-modal-form-event', event => {
+            $('#chapterModal').modal('show');
+        })
+
+        window.addEventListener('hide-chapter-modal-form-event', event => {
+            $('#chapterModal').modal('hide');
+        })
+
+        window.addEventListener('toastr-chapter-stored-event', event => {
+            $(document).ready(function () {
+                toastr.options.timeOut = 3500;
+                toastr.info('Парсер успешно создан!');
+            });
+        })
+
+    </script>
 
 </div>
