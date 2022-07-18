@@ -79,8 +79,13 @@ class LeftMenu extends Component
 
     public function render()
     {
-        $this->projects = Project::where('user_id', Auth::id())
+        /*$this->projects = Project::where('user_id', Auth::id())
             ->toBase()
+            ->get();*/
+
+        $this->projects = DB::table('projects')
+            ->where('user_id', Auth::id())
+            ->select('id', 'title')
             ->get();
 
         $this->chapters = DB::table('chapters')
