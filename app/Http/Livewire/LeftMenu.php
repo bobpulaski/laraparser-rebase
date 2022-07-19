@@ -23,7 +23,6 @@ class LeftMenu extends Component
     protected $rules = [
         'title' => 'required|min:3|max:20',
     ];
-
     public function updated($propertyName)
     {
         $this->submitButtonState = 'disabled';
@@ -96,6 +95,4 @@ class LeftMenu extends Component
 
         return view('livewire.left-menu');
     }
-
-
 }
