@@ -6,14 +6,16 @@
 
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-        <div class="d-flex justify-content-between">
+        <div class="{{-- d-flexjustify-content-between--}}">
+            <button wire:click.prevent="projectAddShowModal" class="btn btn-block btn-xs btn-primary mb-3" type="submit"
+                    title="{{ __('Создать новый проект') }}">{{ __('Создать проект') }}</button>
             <div class="nav-header">{{ __('МОИ ПРОЕКТЫ') }}</div>
             <div class="mr-2">
                 <!-- Button trigger modal -->
-                <button wire:click.prevent="projectAddShowModal" type="button" title="{{ __('Создать новый проект') }}"
+                {{--<button wire:click.prevent="projectAddShowModal" type="button" title="{{ __('Создать новый проект') }}"
                         class="btn btn-block btn-outline-light btn-xs">
                     +
-                </button>
+                </button>--}}
 
             </div>
         </div>
@@ -35,7 +37,7 @@
                             <li class="nav-item font-weight-light">
                                 <a href=""
                                    class="nav-link @if ($chapter->id === $activeChapterId) active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
+                                    <i class="far fa-square nav-icon fa-xs"></i>
                                     <p>{{ $chapter->title }}</p>
                                 </a>
                             </li>
@@ -47,7 +49,7 @@
                         {{ __('Добавить парсер') }}
                     </button>--}}
                     <div class="btn-group btn-block">
-                        <button type="button" class="btn btn-xs btn-outline-secondary">{{ __('Проект') }}</button>
+                        {{--<button type="button" class="btn btn-xs btn-outline-secondary">{{ __('Проект') }}</button>--}}
                         <button type="button" class="btn btn-xs btn-outline-secondary dropdown-toggle description-icon"
                                 data-toggle="dropdown" aria-expanded="false">
                             <span class="sr-only">Toggle Dropdown</span>
