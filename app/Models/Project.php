@@ -22,11 +22,11 @@ class Project extends Model
 
     public function chapters()
     {
-        return $this->hasMany (Chapter::class, 'project_id');
+        return $this->hasMany(Chapter::class, 'project_id');
     }
 
     public function users()
     {
-        return $this->belongsTo (User::class);
+        return $this->belongsTo(User::class);
     }
 }
