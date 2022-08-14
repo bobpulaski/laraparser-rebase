@@ -20,7 +20,11 @@ class LeftMenu extends Component
     public $whatKindOfModal = ''; // Определяем с каким окном какой модели работаем
     public $submitButtonState = 'disabled'; // Определяем состояние кнопки "Создать" активна или нет при валидации формы
 
+    public $projectId;
     public $projectTitle;
+
+    public $chapterId;
+    public $chapterTitle;
 
     protected $rules = [
         'title' => 'required|min:3|max:20',
@@ -81,8 +85,32 @@ class LeftMenu extends Component
     public function projectDeleteShowModal($projectId)
     {
         $this->whatKindOfModal = 'project';
+        $this->projectId = $projectId;
         $this->projectTitle = Project::find($projectId)->title;
         $this->dispatchBrowserEvent('show-project-delete-modal-form-event');
+    }
+
+    public function projectDelete()
+    {
+        dd($this->projectId);
+    }
+
+    public function chapterDeleteShowModal($chapterId)
+    {
+        $this->whatKindOfModal = 'chapter';
+        $this->chapterId = $chapterId;
+        $this->chapterTitle = Chapter::find($chapterId)->title;
+        $this->dispatchBrowserEvent('show-chapter-delete-modal-form-event');
+    }
+
+    public function chapterDelete()
+    {
+        DB::table('chapters')
+            ->where('id', $this->chapterId)
+            ->delete();
+            
+        $this->dispatchBrowserEvent('hide-chapter-delete-modal-form-event');
+        $this->dispatchBrowserEvent('toastr-chapter-deleted-event');
     }
 
     public function render()

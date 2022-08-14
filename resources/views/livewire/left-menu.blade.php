@@ -2,7 +2,7 @@
 
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-        <div class="{{-- d-flexjustify-content-between --}}">
+        <div>
             <button wire:click.prevent="projectAddShowModal" class="btn btn-block btn-xs btn-primary mb-3" type="submit"
                 title="{{ __('Создать новый проект') }}">{{ __('Создать проект') }}</button>
             <div class="nav-header">
@@ -26,7 +26,13 @@
                         @if ($chapter->project_id == $project->id)
                             <li class="nav-item font-weight-light ml-2">
                                 <a href="" class="nav-link @if ($chapter->id === $activeChapterId) active @endif">
-                                    <p>{{ $chapter->title }}</p>
+                                    <div class="d-flex justify-content-between">
+                                        <p>{{ $chapter->title }}</p>
+                                        <button wire:click.prevent="chapterDeleteShowModal({{ $chapter->id }})"
+                                            class="btn btn-outline-light btn-sm" style="color: #343a40; border:none;"
+                                            type="submit" title="{{ __('Удалить парсер') }}"><i
+                                                class="far fa-trash-alt"></i></button>
+                                    </div>
                                 </a>
                             </li>
                         @endif
@@ -155,8 +161,7 @@
                                 @break
 
                                 @case('enabled')
-                                    <button wire:click="storeProject" type="button"
-                                        class="btn btn-info">{{ __('Создать') }}</button>
+                                    <button wire:click="storeProject" type="button" class="btn btn-info">{{ __('Создать') }}</button>
                                 @break
 
                                 @default
@@ -171,8 +176,7 @@
                                 @break
 
                                 @case('enabled')
-                                    <button wire:click="storeChapter" type="button"
-                                        class="btn btn-info">{{ __('Создать') }}</button>
+                                    <button wire:click="storeChapter" type="button" class="btn btn-info">{{ __('Создать') }}</button>
                                 @break
 
                                 @default
@@ -189,44 +193,17 @@
     <!-- Create Left Menu Modal END -->
 
     {{-- Delete Confirmation Left Menu Modal BEGIN --}}
+    @switch($whatKindOfModal)
+        @case('project')
+            @include('livewire.components.left-menu.modals.project-delete')
+        @break
 
-    {{-- {!! ($whatKindOfModal === 'project') ? '<h1>project</h1> ': '<h1>chapter</h1>' !!} --}}
+        @case('chapter')
+            @include('livewire.components.left-menu.modals.chapter-delete')
+        @break
 
-    <div class="modal fade" {!! $whatKindOfModal === 'project'
-        ? 'id="projectDeleteModal"'
-        : ($whatKindOfModal === 'chapter'
-            ? 'id="chapterDeleteModal"'
-            : 'id="noIdDeleteModal"') !!} data-backdrop="static" data-keyboard="true" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    @switch($whatKindOfModal)
-                        @case('project')
-                            <h5 class="modal-title" id="staticBackdropLabel">Удалить проект «{{ $projectTitle }}»?</h5>
-                        @break
-
-                        @default
-                    @endswitch
-
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p class="text-secondary">
-                        <small>При удалении проекта также будут удалены все связанные с ним парсеры. Это действие
-                            отменить не удастся.</small>
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Understood</button>
-                </div>
-            </div>
-        </div>
-    </div>
+        @default
+    @endswitch
     {{-- Delete Confirmation Left Menu Modal END --}}
 
 
@@ -237,13 +214,6 @@
 
         window.addEventListener('hide-project-modal-form-event', event => {
             $('#projectModal').modal('hide');
-        })
-
-        window.addEventListener('toastr-project-stored-event', event => {
-            $(document).ready(function() {
-                toastr.options.timeOut = 3500;
-                toastr.info('Проект успешно создан!');
-            });
         })
 
         window.addEventListener('show-chapter-modal-form-event', event => {
@@ -258,12 +228,36 @@
             $('#projectDeleteModal').modal('show');
         })
 
-        window.addEventListener('toastr-chapter-stored-event', event => {
-            $(document).ready(function() {
-                toastr.options.timeOut = 3500;
-                toastr.info('Парсер успешно создан!');
-            });
+        window.addEventListener('show-chapter-delete-modal-form-event', event => {
+            $('#chapterDeleteModal').modal('show');
         })
+
+        window.addEventListener('hide-chapter-delete-modal-form-event', event => {
+            $('#chapterDeleteModal').modal('hide');
+        })
+
+        window.addEventListener('toastr-project-stored-event', event => {
+                toastr.options.timeOut = 3500;
+                toastr.options.preventDuplicates = true;
+                toastr.options.preventOpenDuplicates = true;
+                toastr.info('Проект успешно создан!');
+        })
+        
+        window.addEventListener('toastr-chapter-stored-event', event => {
+                toastr.options.timeOut = 3500;
+                toastr.options.preventDuplicates = true;
+                toastr.options.preventOpenDuplicates = true;
+                toastr.info('Парсер успешно создан!');
+        })
+
+        window.addEventListener('toastr-chapter-deleted-event', event => {
+                toastr.options.timeOut = 3500;
+                toastr.options.preventDuplicates = true;
+                toastr.options.preventOpenDuplicates = true;
+                toastr.info('Парсер успешно удален!');
+        })
+
+
     </script>
 
 </div>
